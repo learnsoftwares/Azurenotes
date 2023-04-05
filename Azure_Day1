@@ -1,0 +1,25 @@
+
+#resource group
+az group create --name vmrg --location eastus2
+
+
+# create vnet and subnet
+az network vnet create -g vmrg -n MyVnet --address-prefix 10.0.0.0/16 --subnet-name MySubnet --subnet-prefixes 10.0.0.0/24
+                       
+
+# create vm
+az vm create \
+    --resource-group vmrg \
+    --name myvm \
+    --image Win2022AzureEditionCore \
+    --size Standard_B1s \
+    --vnet-name Myvnet \
+    --subnet MySubnet  \
+    --public-ip-sku Standard \
+    --admin-username myadmin
+    
+#vm delete
+az vm delete -g vmrg -n myvm --yes
+
+# vnet delete
+az network vnet delete -g vmrg -n MySubnet
